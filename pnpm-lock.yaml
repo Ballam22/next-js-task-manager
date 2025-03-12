@@ -11,9 +11,6 @@ importers:
       '@upleveled/ley':
         specifier: 0.9.2
         version: 0.9.2
-      autoprefixer:
-        specifier: ^10.4.21
-        version: 10.4.21(postcss@8.5.3)
       cloudinary:
         specifier: ^2.5.1
         version: 2.5.1
@@ -23,6 +20,9 @@ importers:
       next:
         specifier: 15.1.7
         version: 15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.84.0)
+      pnpm:
+        specifier: ^10.6.1
+        version: 10.6.1
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
@@ -40,14 +40,17 @@ importers:
         version: 4.19.2
     devDependencies:
       '@types/node':
-        specifier: ^20
-        version: 20.17.24
+        specifier: ^22.13.9
+        version: 22.13.9
       '@types/react':
         specifier: ^19
         version: 19.0.10
       '@types/react-dom':
         specifier: ^19
         version: 19.0.4(@types/react@19.0.10)
+      autoprefixer:
+        specifier: ^10.4.21
+        version: 10.4.21(postcss@8.5.3)
       daisyui:
         specifier: ^5.0.0
         version: 5.0.0
@@ -56,10 +59,16 @@ importers:
         version: 9.22.0
       eslint-config-upleveled:
         specifier: ^9.2.1
-        version: 9.2.1(@babel/core@7.26.9)(@types/node@20.17.24)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(eslint@9.22.0)(globals@15.15.0)(typescript@5.8.2)
+        version: 9.2.1(@babel/core@7.26.9)(@types/node@22.13.9)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(eslint@9.22.0)(globals@16.0.0)(typescript@5.8.2)
+      globals:
+        specifier: 16.0.0
+        version: 16.0.0
       libpg-query:
         specifier: ^16.3.0
         version: 16.3.0(encoding@0.1.13)
+      postcss:
+        specifier: ^8.5.3
+        version: 8.5.3
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -774,8 +783,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@20.17.24':
-    resolution: {integrity: sha512-d7fGCyB96w9BnWQrOsJtpyiSaBcAYYr75bnK6ZRjDbql2cGLj/3GsL5OYmLPNq76l7Gf2q4Rv9J2o6h5CrD9sA==}
+  '@types/node@22.13.9':
+    resolution: {integrity: sha512-acBjXdRJ3A6Pb3tqnw9HZmyR3Fiol3aGxRCK1x3d+6CDAMjl7I649wpSd+yNURCjbOUGu9tqtLKnTGxmK6CyGw==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -1636,6 +1645,10 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
+  globals@16.0.0:
+    resolution: {integrity: sha512-iInW14XItCXET01CQFqudPOWP2jYMl7T+QRQT+UNcR/iQncN/F0UNpgd76iFkBPgNQb4+X3LV9tLJYzwh+Gl3A==}
+    engines: {node: '>=18'}
+
   globalthis@1.0.4:
     resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
     engines: {node: '>= 0.4'}
@@ -2296,6 +2309,11 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
+  pnpm@10.6.1:
+    resolution: {integrity: sha512-QO4Jr0B/qfu1+/uOHLQPu3TArww+EOkiTXtTx2WFKGFbLJJFDnTPrZHjotyv485AUNgL2nHXV3VtLOK2YhPpow==}
+    engines: {node: '>=18.12'}
+    hasBin: true
+
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
@@ -2836,8 +2854,8 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+  undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
   unicorn-magic@0.1.0:
     resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
@@ -3599,9 +3617,9 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@20.17.24':
+  '@types/node@22.13.9':
     dependencies:
-      undici-types: 6.19.8
+      undici-types: 6.20.0
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -4247,12 +4265,12 @@ snapshots:
       '@eslint/compat': 1.2.7(eslint@9.22.0)
       eslint: 9.22.0
 
-  eslint-config-upleveled@9.2.1(@babel/core@7.26.9)(@types/node@20.17.24)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(eslint@9.22.0)(globals@15.15.0)(typescript@5.8.2):
+  eslint-config-upleveled@9.2.1(@babel/core@7.26.9)(@types/node@22.13.9)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(eslint@9.22.0)(globals@16.0.0)(typescript@5.8.2):
     dependencies:
       '@babel/eslint-parser': 7.26.8(@babel/core@7.26.9)(eslint@9.22.0)
       '@eslint/compat': 1.2.7(eslint@9.22.0)
       '@next/eslint-plugin-next': 15.2.1
-      '@types/node': 20.17.24
+      '@types/node': 22.13.9
       '@types/react': 19.0.10
       '@types/react-dom': 19.0.4(@types/react@19.0.10)
       '@typescript-eslint/eslint-plugin': 8.26.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0)(typescript@5.8.2)
@@ -4271,7 +4289,7 @@ snapshots:
       eslint-plugin-testing-library: 7.1.1(eslint@9.22.0)(typescript@5.8.2)
       eslint-plugin-unicorn: 57.0.0(eslint@9.22.0)
       eslint-plugin-upleveled: 2.1.14(eslint@9.22.0)
-      globals: 15.15.0
+      globals: 16.0.0
       is-plain-obj: 4.1.0
       sort-package-json: 2.15.0
       strip-json-comments: 5.0.1
@@ -4724,6 +4742,8 @@ snapshots:
   globals@14.0.0: {}
 
   globals@15.15.0: {}
+
+  globals@16.0.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -5371,6 +5391,8 @@ snapshots:
   picomatch@4.0.2: {}
 
   pluralize@8.0.0: {}
+
+  pnpm@10.6.1: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -6032,7 +6054,7 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
-  undici-types@6.19.8: {}
+  undici-types@6.20.0: {}
 
   unicorn-magic@0.1.0: {}
 
