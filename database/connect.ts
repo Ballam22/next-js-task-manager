@@ -1,13 +1,15 @@
+// database/connect.ts
 import { PrismaClient } from '@prisma/client';
 
-declare namespace globalThis {
-  let prisma: PrismaClient;
-}
-function connectOneTimeToDatabase() {
-  if (!('prisma' in globalThis)) {
-    globalThis.prisma = new PrismaClient();
-  }
-  return globalThis.prisma;
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
 }
 
-export const prisma = connectOneTimeToDatabase();
+const prisma = global.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}
+
+export { prisma };

@@ -1,23 +1,49 @@
+import type { Session } from '@prisma/client';
 import { prisma } from '../connect';
 
-export interface CreatSessionsInput {
+export interface CreateSessionInput {
   token: string;
-  expirey_timestamp: Date;
+  expiry_timestamp: Date;
   user_id: string;
 }
 
-export async function createSession(sessionData: CreatSessionsInput) {
-  return await prisma.session.create({
-    data: {
-      token: sessionData.token,
-      expiry_timestamp: sessionData.expirey_timestamp,
-      user_id: sessionData.user_id,
-    },
-  });
+export async function createSession(
+  sessionData: CreateSessionInput,
+): Promise<Session> {
+  try {
+    return await prisma.session.create({
+      data: {
+        token: sessionData.token,
+        expiry_timestamp: sessionData.expiry_timestamp,
+        user_id: sessionData.user_id,
+      },
+    });
+  } catch (error) {
+    console.error('Error creating session:', error);
+    throw new Error('Failed to create session');
+  }
 }
 
-export async function findSessionByToken(token: string) {
-  return await prisma.session.delete({
-    where: { token },
-  });
+export async function findSessionByToken(
+  token: string,
+): Promise<Session | null> {
+  try {
+    return await prisma.session.findUnique({
+      where: { token },
+    });
+  } catch (error) {
+    console.error('Error finding session by token:', error);
+    throw new Error('Failed to fetch session');
+  }
+}
+
+export async function deleteSession(token: string): Promise<Session> {
+  try {
+    return await prisma.session.delete({
+      where: { token },
+    });
+  } catch (error) {
+    console.error('Error deleting session:', error);
+    throw new Error('Failed to delete session');
+  }
 }

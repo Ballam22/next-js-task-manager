@@ -8,11 +8,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 model User {
   id              String   @id @default(uuid())
   username        String   @unique
@@ -126,4 +121,9 @@ model ProjectStatus {
   name String @unique
 
   projects Project[]
+}
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
