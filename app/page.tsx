@@ -3,7 +3,6 @@ import styles from './page.module.css';
 export default function Home() {
   return (
     <div className={styles.container}>
-      {/* Navigation Bar */}
       <nav className={styles.navbar}>
         <h1 className={styles.logo}>Agile Project Tracker</h1>
         <div className={styles.navLinks}>
@@ -22,15 +21,13 @@ export default function Home() {
           <a href="/login" className={styles.navLink}>
             Login
           </a>
-          <a href="/login" className={styles.navLink}>
+          <a href="/register" className={styles.navLink}>
             Register
           </a>
         </div>
       </nav>
 
-      {/* Main Layout */}
       <div className={styles.mainLayout}>
-        {/* Sidebar */}
         <aside className={styles.sidebar}>
           <h2 className={styles.sidebarTitle}>Quick Links</h2>
           <ul className={styles.sidebarLinks}>
@@ -57,7 +54,6 @@ export default function Home() {
           </ul>
         </aside>
 
-        {/* Main Content */}
         <main className={styles.mainContent}>
           <h2 className={styles.mainTitle}>Welcome to Agile Project Tracker</h2>
           <p className={styles.mainDescription}>

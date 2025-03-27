@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import styles from '../../../components/auth.module.css';
+import styles from '../../auth.module.css';
 import { registerSchema } from '../../validation/auth';
 
 export default function RegisterSchema() {
@@ -17,12 +17,11 @@ export default function RegisterSchema() {
     setError('');
 
     try {
-      // Add client-side validation
-      const result = registerSchema.safeParse({ email, password });
+      const result = registerSchema.safeParse({ username, email, password });
 
       if (!result.success) {
         const errorMessages = result.error.issues
-          .map((issue) => issue.message)
+          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
           .join(', ');
         throw new Error(errorMessages);
       }
@@ -64,7 +63,7 @@ export default function RegisterSchema() {
 
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <div className={styles.formGroup}>
-          <label htmlFor="username">UserName=</label>
+          <label htmlFor="username">UserName</label>
           <input
             id="username"
             value={username}
@@ -100,7 +99,7 @@ export default function RegisterSchema() {
       </form>
       <div className={styles.authSwitch}>
         Already have an account?{' '}
-        <Link href="/login" className={styles.authLink}>
+        <Link href="/api/login" className={styles.authLink}>
           Login here
         </Link>
       </div>

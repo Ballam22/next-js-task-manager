@@ -15,8 +15,13 @@ export const registerSchema = z.object({
     .regex(/[0-9]/, 'Must contain at least one number'),
 });
 
-// login schema for consistency
 export const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
+});
+
+export const userSchema = z.object({
+  id: z.string().uuid(),
+  username: registerSchema.shape.username,
+  email: registerSchema.shape.email,
 });

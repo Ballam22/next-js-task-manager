@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import styles from '../../../components/auth.module.css';
+import styles from '../../auth.module.css';
 import { loginSchema } from '../../validation/auth';
 
 export function LoginForm() {
@@ -16,7 +16,6 @@ export function LoginForm() {
     setError('');
 
     try {
-      // Add client-side validation
       const result = loginSchema.safeParse({ email, password });
 
       if (!result.success) {

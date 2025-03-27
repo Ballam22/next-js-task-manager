@@ -9,6 +9,11 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
 
+export const baseRegisterSchema = z.object({
+  username: z.string().min(3).max(255),
+  email: z.string().email('invalid email'),
+});
+
 const registerRequestSchema = registerSchema.extend({
   password: z
     .string()
@@ -38,7 +43,7 @@ export async function POST(request: Request) {
     const token = generateToken(user.id);
     const session = await createSession({
       token,
-      expiry_timestamp: new Date(Date.now() + 86400000), // 1 day
+      expiry_timestamp: new Date(Date.now() + 86400000),
       user_id: user.id,
     });
 
@@ -56,7 +61,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Registration error:', error);
 
-    // Handle Zod errors
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: formatZodError(error) },
@@ -64,7 +68,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Handle Prisma errors
     if (isPrismaError(error)) {
       if (error.code === 'P2002') {
         return NextResponse.json(
@@ -78,7 +81,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generic error response
     return NextResponse.json(
       { error: 'Registration failed. Please try again.' },
       { status: 500 },
