@@ -47,3 +47,6 @@ export async function deleteSession(token: string): Promise<Session> {
     throw new Error('Failed to delete session');
   }
 }
+export function isSessionExpired(session: Session): boolean {
+  return new Date(session.expiry_timestamp) < new Date();
+}

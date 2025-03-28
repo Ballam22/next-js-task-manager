@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../../database/connect';
 
 interface TaskResponse {
   id: string;

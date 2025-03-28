@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../../database/connect';
 
 interface ActivityResponse {
   id: string;
@@ -26,7 +24,6 @@ export async function GET(
   }
 
   try {
-    // Get recent tasks updates
     const taskActivities = await prisma.task.findMany({
       where: { assigned_user_id: userId },
       orderBy: { updated_at: 'desc' },
@@ -41,7 +38,6 @@ export async function GET(
       },
     });
 
-    // Get recent comments
     const commentActivities = await prisma.comment.findMany({
       where: { user_id: userId },
       orderBy: { created_at: 'desc' },
@@ -60,7 +56,6 @@ export async function GET(
       },
     });
 
-    // Format activities
     const activities: ActivityResponse[] = [
       ...taskActivities.map((task) => ({
         id: task.id,
