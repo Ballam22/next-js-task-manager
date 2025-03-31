@@ -1,63 +1,55 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../util/lib/connect';
+import { taskSchema } from '@/app/validation/schemas';
+import { createTask } from '@/database/tasks';
+import type { Task } from '@prisma/client';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-interface TaskResponse {
-  id: string;
-  title: string;
-  description: string;
-  priority: 'low' | 'medium' | 'high';
-  status: 'todo' | 'in-progress' | 'done';
-  dueDate: Date;
-  projectName: string;
-}
+export type TasksResponseBodyPost =
+  | {
+      task: Task;
+    }
+  | {
+      error: string;
+    };
 
-interface ErrorResponse {
-  error: string;
-}
+export async function POST(
+  request: Request,
+): Promise<NextResponse<TasksResponseBodyPost>> {
+  // get body from client and parse it
+  const requestBody = await request.json();
 
-export async function GET(
-  request: NextRequest,
-): Promise<NextResponse<TaskResponse[] | ErrorResponse>> {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
+  // validate information from client
+  const result = taskSchema.omit({ status: true }).safeParse(requestBody);
 
-  if (!userId) {
-    return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-  }
-
-  try {
-    const tasks = await prisma.task.findMany({
-      where: { assigned_user_id: userId },
-      include: {
-        status: true,
-        priority: true,
-        project: {
-          select: {
-            name: true,
-          },
-        },
-      },
-      orderBy: {
-        due_date: 'asc',
-      },
-    });
-
-    const formattedTasks: TaskResponse[] = tasks.map((task) => ({
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      priority: task.priority.name.toLowerCase() as 'low' | 'medium' | 'high',
-      status: task.status.name.toLowerCase() as 'todo' | 'in-progress' | 'done',
-      dueDate: task.due_date,
-      projectName: task.project.name,
-    }));
-
-    return NextResponse.json(formattedTasks);
-  } catch (error) {
-    console.error('Error fetching tasks:', error);
+  // If client sends request body with incorrect data,
+  // return a response with a 400 status code to the client
+  if (!result.success) {
     return NextResponse.json(
-      { error: 'Failed to fetch tasks' },
-      { status: 500 },
+      {
+        error: 'Request does not contain task object',
+      },
+      { status: 400 },
     );
   }
+  const sessionTokenCookie = (await cookies()).get('sessionToken');
+
+  const newTask =
+    sessionTokenCookie &&
+    (await createTask(sessionTokenCookie.value, {
+      title: result.data.title,
+      date: result.data.date,
+    }));
+
+  if (!newTask) {
+    return NextResponse.json(
+      {
+        error: 'Task not created or access denied creating tasks',
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+
+  return NextResponse.json({ task: newTask });
 }

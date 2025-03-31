@@ -18,3 +18,9 @@ export const loginSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
   password: z.string().min(1, 'Password is required'),
 });
+
+export const taskSchema = z.object({
+  title: z.string().min(1, 'Please enter a title'),
+  date: z.date(),
+  status: z.enum(['upcoming', 'overdue', 'completed']),
+});

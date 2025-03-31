@@ -15,17 +15,33 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   sessions    Session[]
-
+  tasks      Task[]
 }
 
 model Session {
   id               String   @id @default(uuid())
   token            String   @unique
-  expiryTimestamp DateTime  @default(dbgenerated("now() + interval '48 hours'"))
-  userId          String
+  expiryTimestamp   DateTime  @default(dbgenerated("now() + interval '48 hours'"))
+  userId           String
   user             User     @relation(fields: [userId], references: [id])
 }
 
+model Task {
+  id               String   @id @default(uuid())
+  date            DateTime
+  createdAt        DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    title          String
+    status          Status @default(upcoming)
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+enum Status {
+  upcoming
+  overdue
+  completed
+}
 
 datasource db {
   provider          = "postgresql"
