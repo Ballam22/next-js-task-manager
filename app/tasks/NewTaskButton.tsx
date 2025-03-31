@@ -9,6 +9,7 @@ export default function NewTaskButton() {
     <Button
       className="bg-green-800 cursor-pointer"
       onClick={() => router.push('/tasks/new')}
+      size={'sm'}
     >
       Add Task
     </Button>

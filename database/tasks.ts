@@ -21,6 +21,26 @@ export async function getTasks(sessionToken: Session['token']) {
   return tasks;
 }
 
+export async function getTask(
+  taskId: Task['id'],
+  sessionToken: Session['token'],
+) {
+  const task = await prisma.task.findUnique({
+    where: {
+      id: taskId,
+      user: {
+        sessions: {
+          some: {
+            token: sessionToken,
+            expiryTimestamp: { gt: new Date() },
+          },
+        },
+      },
+    },
+  });
+  return task;
+}
+
 export async function getUpcomingTasks(sessionToken: Session['token']) {
   const tasks = await prisma.task.findMany({
     where: {
@@ -81,8 +101,8 @@ export async function updateTask(
 }
 
 export async function deleteTask(
-  taskId: string,
   sessionToken: Session['token'],
+  taskId: string,
 ) {
   const task = await prisma.task.delete({
     where: {

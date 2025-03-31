@@ -1,16 +1,18 @@
 'use server';
+
 import { deleteSession } from '@/database/session';
 import { cookies } from 'next/headers';
 
-export async function LogOut() {
+export async function logout() {
   const cookieStore = await cookies();
-  const sessionToken = cookieStore.get('sessionToken')?.value;
-  if (sessionToken) {
-    await deleteSession(sessionToken);
-    cookieStore.set({
-      name: 'sessionToken',
-      value: '',
-      maxAge: 0,
-    });
+
+  const token = cookieStore.get('sessionToken');
+
+  if (token) {
+    await deleteSession(token.value);
+
+    cookieStore.delete(token.name);
   }
+
+  return;
 }

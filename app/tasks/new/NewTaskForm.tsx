@@ -13,7 +13,6 @@ export default function NewTaskForm() {
   const router = useRouter();
 
   function handleResetButtonClick() {
-    console.log('Hi');
     setTitle('');
     setDate('');
   }

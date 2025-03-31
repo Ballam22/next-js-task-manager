@@ -22,5 +22,5 @@ export const loginSchema = z.object({
 export const taskSchema = z.object({
   title: z.string().min(1, 'Please enter a title'),
   date: z.coerce.date(),
-  status: z.enum(['upcoming', 'overdue', 'completed']),
+  status: z.enum(['upcoming', 'ongoing', 'completed']),
 });

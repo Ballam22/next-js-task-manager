@@ -12,11 +12,9 @@ export default async function TasksPage() {
     redirect('/login');
   }
   const tasks = await getTasks(sessionTokenCookie.value);
-  // const experiences = await getNewestExperiencesInsecure();
   return (
     <>
-      <h1>Welcome, {user.username}</h1>
-      <h2>Tasks</h2>
+      <h1>Tasks</h1>
       <NewTaskButton />
       <ViewTasks tasks={tasks} />
     </>

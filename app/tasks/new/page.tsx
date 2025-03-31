@@ -12,7 +12,6 @@ export default async function NewTaskPage() {
     redirect('/login');
   }
   const tasks = await getTasks(sessionTokenCookie.value);
-  // const experiences = await getNewestExperiencesInsecure();
   return (
     <>
       <h1>Add task</h1>

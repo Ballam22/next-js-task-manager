@@ -3,6 +3,7 @@ import { getUser } from '@/database/users';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import LogoutButton from './LogoutButton';
 
 export default async function DashboardPage() {
   const sessionTokenCookie = (await cookies()).get('sessionToken');
@@ -28,6 +29,7 @@ export default async function DashboardPage() {
       <Link href="/tasks" className="text-blue-500 hover:underline">
         Task Details
       </Link>
+      <LogoutButton />
     </>
   );
 }

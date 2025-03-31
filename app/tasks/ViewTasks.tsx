@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Task } from '@prisma/client';
 import { Copy } from 'lucide-react';
+import Link from 'next/link';
 
 const tabs = [
   {
@@ -48,8 +49,10 @@ export default function ViewTasks({ tasks }: Props) {
               ? upcomingTasks.map((task) => {
                   return (
                     <div key={`id-${task.id}`} className="my-2">
-                      <p>{task.title}</p>
-                      <p>{task.date.toLocaleDateString()}</p>
+                      <Link href={`/tasks/${task.id}`}>
+                        <p>{task.title}</p>
+                        <p>{task.date.toLocaleDateString()}</p>
+                      </Link>
                     </div>
                   );
                 })
@@ -64,8 +67,10 @@ export default function ViewTasks({ tasks }: Props) {
               ongoingTasks.map((task) => {
                 return (
                   <div key={`id-${task.id}`} className="my-2">
-                    <p>{task.title}</p>
-                    <p>{task.date.toLocaleDateString()}</p>
+                    <Link href={`/tasks/${task.id}`}>
+                      <p>{task.title}</p>
+                      <p>{task.date.toLocaleDateString()}</p>
+                    </Link>
                   </div>
                 );
               })}
@@ -79,8 +84,10 @@ export default function ViewTasks({ tasks }: Props) {
               completedTasks.map((task) => {
                 return (
                   <div key={`id-${task.id}`} className="my-2">
-                    <p>{task.title}</p>
-                    <p>{task.date.toLocaleDateString()}</p>
+                    <Link href={`/tasks/${task.id}`}>
+                      <p>{task.title}</p>
+                      <p>{task.date.toLocaleDateString()}</p>
+                    </Link>
                   </div>
                 );
               })}

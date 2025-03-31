@@ -56,7 +56,7 @@ export async function PUT(
   if (!result.success) {
     return NextResponse.json(
       {
-        error: 'Request does not contain animal object',
+        error: 'Request does not contain task object',
         errorIssues: result.error.issues,
       },
       {
@@ -64,6 +64,8 @@ export async function PUT(
       },
     );
   }
+
+  console.log('Status', result.data.status);
 
   const sessionTokenCookie = (await cookies()).get('sessionToken');
 
