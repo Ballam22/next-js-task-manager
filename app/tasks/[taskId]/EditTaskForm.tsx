@@ -17,6 +17,7 @@ import {
 import { getTask, getTasks } from '@/database/tasks';
 import { getUser } from '@/database/users';
 import type { Task } from '@prisma/client';
+import dayjs from 'dayjs';
 import { cookies } from 'next/headers';
 import { redirect, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -27,7 +28,7 @@ type Props = {
 
 export default function EditTaskForm({ task }: Props) {
   const [title, setTitle] = useState(task.title);
-  const [date, setDate] = useState(task.date.toISOString());
+  const [date, setDate] = useState(dayjs(task.date).format('YYYY-MM-DD'));
   const [status, setStatus] = useState(task.status);
 
   const [errorMessage, setErrorMessage] = useState('');
