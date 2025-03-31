@@ -1,9 +1,9 @@
-import { createSession } from '@/database/models/session';
-import { findUserByEmail } from '@/database/models/users';
+import crypto from 'node:crypto';
+import { createSession } from '@/database/session';
+import { findUserByEmail } from '@/database/users';
 import { secureCookieOptions } from '@/util/cookies';
 import { formatZodError, isPrismaError } from '@/util/error-utils';
 import { comparePassword } from '@/util/hashedpassword';
-import { generateToken } from '@/util/jwt';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
@@ -43,8 +43,8 @@ export async function POST(request: Request) {
         { status: 401 },
       );
     }
+    const token = crypto.randomBytes(100).toString('base64');
 
-    const token = generateToken(user.id);
     const session = await createSession({
       token,
       expiry_timestamp: new Date(Date.now() + 86400000),

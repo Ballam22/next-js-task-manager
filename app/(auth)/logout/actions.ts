@@ -1,5 +1,5 @@
 'use server';
-import { deleteSession } from '@/database/models/session';
+import { deleteSession } from '@/database/session';
 import { cookies } from 'next/headers';
 
 export async function LogOut() {

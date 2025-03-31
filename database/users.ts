@@ -1,5 +1,5 @@
 import type { User } from '@prisma/client';
-import { prisma } from '../connect';
+import { prisma } from '../util/lib/connect';
 
 export interface CreateUserInput {
   username: string;

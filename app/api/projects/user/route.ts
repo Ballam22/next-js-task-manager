@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../../database/connect';
+import { prisma } from '../../../../util/lib/connect';
 
 interface ProjectResponse {
   id: string;

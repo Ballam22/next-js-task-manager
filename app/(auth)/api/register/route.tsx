@@ -1,10 +1,10 @@
+import crypto from 'node:crypto';
 import { registerSchema } from '@/app/validation/auth';
-import { createSession } from '@/database/models/session';
-import { createUser } from '@/database/models/users';
+import { createSession } from '@/database/session';
+import { createUser } from '@/database/users';
 import { secureCookieOptions } from '@/util/cookies';
 import { formatZodError, isPrismaError } from '@/util/error-utils';
 import { hashPassword } from '@/util/hashedpassword';
-import { generateToken } from '@/util/jwt';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       hashed_password: hashedPassword,
     });
 
-    const token = generateToken(user.id);
+    const token = crypto.randomBytes(100).toString('base64');
     const session = await createSession({
       token,
       expiry_timestamp: new Date(Date.now() + 86400000),

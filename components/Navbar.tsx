@@ -1,4 +1,4 @@
-import LogoutButton from '@/app/logout/LogoutButton';
+import LogoutButton from '@/app/(auth)/logout/LogoutButton';
 import Link from 'next/link';
 import { Avatar } from './Avatar';
 

@@ -1,5 +1,5 @@
 import type { Session } from '@prisma/client';
-import { prisma } from '../connect';
+import { prisma } from '../util/lib/connect';
 
 export interface CreateSessionInput {
   token: string;
@@ -49,4 +49,18 @@ export async function deleteSession(token: string): Promise<Session> {
 }
 export function isSessionExpired(session: Session): boolean {
   return new Date(session.expiry_timestamp) < new Date();
+}
+
+export async function getSessionWithUser(token: string) {
+  return await prisma.session.findUnique({
+    where: { token },
+    include: { user: true },
+  });
+}
+
+export async function getUserWithSessions(userID: string) {
+  return await prisma.user.findUnique({
+    where: { id: userID },
+    include: { sessions: true },
+  });
 }
