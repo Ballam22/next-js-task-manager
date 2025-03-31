@@ -2,6 +2,45 @@ import type { Session, Task } from '@prisma/client';
 import { prisma } from '../util/lib/connect';
 import { getUser } from './users';
 
+export async function getTasks(sessionToken: Session['token']) {
+  const tasks = await prisma.task.findMany({
+    where: {
+      user: {
+        sessions: {
+          some: {
+            token: sessionToken,
+            expiryTimestamp: { gt: new Date() },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return tasks;
+}
+
+export async function getUpcomingTasks(sessionToken: Session['token']) {
+  const tasks = await prisma.task.findMany({
+    where: {
+      status: 'upcoming',
+      user: {
+        sessions: {
+          some: {
+            token: sessionToken,
+            expiryTimestamp: { gt: new Date() },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return tasks;
+}
+
 export async function createTask(
   sessionToken: Session['token'],
   newTask: Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'status'>,

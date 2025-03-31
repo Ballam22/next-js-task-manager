@@ -22,6 +22,25 @@ export async function getUser(sessionToken: Session['token']) {
   return user?.user;
 }
 
+/* export async function getUserWithPayload(sessionToken: Session['token']) {
+  const user = await prisma.session.findUnique({
+    where: {
+      token: sessionToken,
+      expiryTimestamp: {
+        gt: new Date(),
+      },
+    },
+    select: {
+      user: {
+        include: {
+          tasks: true,
+        },
+      },
+    },
+  });
+  return user?.user;
+} */
+
 export async function createUserInsecure(
   userData: Pick<User, 'username' | 'hashedPassword'>,
 ) {

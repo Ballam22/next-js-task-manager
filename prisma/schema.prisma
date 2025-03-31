@@ -39,7 +39,7 @@ model Task {
 
 enum Status {
   upcoming
-  overdue
+  ongoing
   completed
 }
 
