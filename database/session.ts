@@ -1,66 +1,70 @@
-import type { Session } from '@prisma/client';
+import type { Session, User } from '@prisma/client';
 import { prisma } from '../util/lib/connect';
 
-export interface CreateSessionInput {
-  token: string;
-  expiry_timestamp: Date;
-  user_id: string;
+export async function getValidSessionToken(sessionToken: Session['token']) {
+  const session = await prisma.session.findUnique({
+    where: {
+      token: sessionToken,
+      expiryTimestamp: { gt: new Date() },
+    },
+    select: {
+      id: true,
+      token: true,
+      userId: true,
+    },
+  });
+  return session;
+}
+export async function createSessionInsecure(
+  sessionData: Omit<Session, 'expiryTimestamp' | 'id'>,
+) {
+  const session = await prisma.session.create({
+    data: {
+      token: sessionData.token,
+      userId: sessionData.userId,
+    },
+    select: {
+      id: true,
+      userId: true,
+      token: true,
+    },
+  });
+
+  await prisma.session.deleteMany({
+    where: {
+      expiryTimestamp: { lt: new Date() },
+    },
+  });
+
+  return session;
 }
 
-export async function createSession(
-  sessionData: CreateSessionInput,
-): Promise<Session> {
-  try {
-    return await prisma.session.create({
-      data: {
-        token: sessionData.token,
-        expiry_timestamp: sessionData.expiry_timestamp,
-        user_id: sessionData.user_id,
-      },
-    });
-  } catch (error) {
-    console.error('Error creating session:', error);
-    throw new Error('Failed to create session');
-  }
-}
-
-export async function findSessionByToken(
-  token: string,
-): Promise<Session | null> {
-  try {
+/* export async function findSessionByToken(token: string) {
+  {
     return await prisma.session.findUnique({
       where: { token },
     });
-  } catch (error) {
-    console.error('Error finding session by token:', error);
-    throw new Error('Failed to fetch session');
   }
-}
+} */
 
-export async function deleteSession(token: string): Promise<Session> {
-  try {
+export async function deleteSession(token: Session['token']) {
+  {
     return await prisma.session.delete({
       where: { token },
     });
-  } catch (error) {
-    console.error('Error deleting session:', error);
-    throw new Error('Failed to delete session');
   }
 }
-export function isSessionExpired(session: Session): boolean {
-  return new Date(session.expiry_timestamp) < new Date();
-}
 
-export async function getSessionWithUser(token: string) {
+/* export async function getSessionWithUser(token: Session['token']) {
   return await prisma.session.findUnique({
     where: { token },
     include: { user: true },
   });
 }
-
-export async function getUserWithSessions(userID: string) {
+ */
+/* export async function getUserWithSessions(userId: User['id']) {
   return await prisma.user.findUnique({
-    where: { id: userID },
+    where: { id: userId },
     include: { sessions: true },
   });
-}
+} */

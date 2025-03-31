@@ -5,7 +5,6 @@ export const registerSchema = z.object({
     .string()
     .min(3, 'Username must be at least 3 characters')
     .max(255, 'Username cannot exceed 255 characters'),
-  email: z.string().email('Invalid email address'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -16,12 +15,6 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  username: z.string().min(3, 'Username must be at least 3 characters'),
   password: z.string().min(1, 'Password is required'),
-});
-
-export const userSchema = z.object({
-  id: z.string().uuid(),
-  username: registerSchema.shape.username,
-  email: registerSchema.shape.email,
 });

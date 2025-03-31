@@ -1,69 +1,61 @@
 'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from '../../auth.module.css';
-import { loginSchema } from '../../validation/auth';
+import { loginSchema } from '../../validation/schemas';
+import type { LoginResponseBody } from '../api/login/route';
 
 export function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ message: string }[]>();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
 
-    try {
-      const result = loginSchema.safeParse({ email, password });
+    const data: LoginResponseBody = await response.json();
 
-      if (!result.success) {
-        const errorMessages = result.error.issues
-          .map((issue) => issue.message)
-          .join(', ');
-        throw new Error(errorMessages);
-      }
-
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData: { error?: string } = await response.json();
-        throw new Error(errorData.error || 'Failed to log in');
-      }
-
-      window.location.href = '/dashboard';
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
+    if ('errors' in data) {
+      setErrors(data.errors);
+      return;
     }
+
+    // This is not a safe returnTo setup
+    // router.push(
+    //   (props.returnTo) || `/profile/${data.user.username}`,
+    // );
+
+    router.push('/dashboard');
+
+    router.refresh();
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.authTitle}>Login</h1>
+    <div className={styles.authContainer}>
+      <h1 className="font-semibold text-center text-xl mb-2">Login</h1>
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <div className={styles.formGroup}>
-          <label htmlFor="email" className={styles.formLabel}>
-            Email:
+          <label htmlFor="username" className="font-semibold">
+            Username:
           </label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            id="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.formLabel}>
+          <label htmlFor="password" className="font-semibold">
             Password:
           </label>
           <input
@@ -74,10 +66,17 @@ export function LoginForm() {
             required
           />
         </div>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        <button className={styles.authButton} disabled={isLoading}>
-          {isLoading ? 'Loading in...' : 'Login'}
-        </button>
+        <button className={styles.authButton}>Login</button>
+
+        <div className="font-bold text-red-500">
+          {errors?.map((error) => {
+            return (
+              <div key={`error-${error.message}-${Math.random()}`}>
+                <div>{error.message}</div>
+              </div>
+            );
+          })}
+        </div>
       </form>
       <div className={styles.authFooter}>
         Don't have an account?{' '}

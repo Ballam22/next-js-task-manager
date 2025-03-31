@@ -1,55 +1,68 @@
 import crypto from 'node:crypto';
-import { registerSchema } from '@/app/validation/auth';
-import { createSession } from '@/database/session';
-import { createUser } from '@/database/users';
+import { registerSchema } from '@/app/validation/schemas';
+import { createSessionInsecure } from '@/database/session';
+import { createUserInsecure, getUserInsecure } from '@/database/users';
 import { secureCookieOptions } from '@/util/cookies';
 import { formatZodError, isPrismaError } from '@/util/error-utils';
 import { hashPassword } from '@/util/hashedpassword';
+import type { User } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
 
-export const baseRegisterSchema = z.object({
-  username: z.string().min(3).max(255),
-  email: z.string().email('invalid email'),
-});
+export type RegisterResponseBody =
+  | {
+      user: Pick<User, 'id' | 'username'>;
+    }
+  | {
+      errors: { message: string }[];
+    };
 
-const registerRequestSchema = registerSchema.extend({
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .max(32, 'Password cannot exceed 32 characters')
-    .regex(/[A-Z]/, 'Must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Must contain at least one number'),
-});
+export async function POST(
+  request: Request,
+): Promise<NextResponse<RegisterResponseBody>> {
+  const body = await request.json();
+  const result = registerSchema.safeParse(body);
 
-export async function POST(request: Request) {
+  if (!result.success) {
+    return NextResponse.json({ errors: result.error.issues }, { status: 400 });
+  }
+
+  // 3. Check if user already exist in the database
+  const foundUser = await getUserInsecure(result.data.username);
+
+  if (foundUser) {
+    return NextResponse.json(
+      {
+        errors: [{ message: 'Username already taken' }],
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const hashedPassword = await hashPassword(result.data.password);
+  let newUser;
+
   try {
-    const body = await request.json();
-    const result = registerRequestSchema.safeParse(body);
-
-    if (!result.success) {
-      throw new ZodError(result.error.issues);
-    }
-
-    const hashedPassword = await hashPassword(result.data.password);
-    const user = await createUser({
+    newUser = await createUserInsecure({
       username: result.data.username,
-      email: result.data.email,
-      hashed_password: hashedPassword,
+      hashedPassword: hashedPassword,
     });
+  } catch {
+    return NextResponse.json(
+      { errors: [{ message: 'Failed to create user' }] },
+      { status: 500 },
+    );
+  }
 
-    const token = crypto.randomBytes(100).toString('base64');
-    const session = await createSession({
+  const token = crypto.randomBytes(100).toString('base64');
+  try {
+    const session = await createSessionInsecure({
       token,
-      expiry_timestamp: new Date(Date.now() + 86400000),
-      user_id: user.id,
+      userId: newUser.id,
     });
-
-    if (!session.token) {
-      throw new Error('Session creation failed');
-    }
     const cookieStore = await cookies();
     cookieStore.set({
       name: 'sessionToken',
@@ -57,32 +70,10 @@ export async function POST(request: Request) {
       ...secureCookieOptions,
     });
 
-    return NextResponse.json({ user: { username: user.username } });
-  } catch (error) {
-    console.error('Registration error:', error);
-
-    if (error instanceof ZodError) {
-      return NextResponse.json(
-        { error: formatZodError(error) },
-        { status: 400 },
-      );
-    }
-
-    if (isPrismaError(error)) {
-      if (error.code === 'P2002') {
-        return NextResponse.json(
-          { error: 'Email or username already registered' },
-          { status: 409 },
-        );
-      }
-      return NextResponse.json(
-        { error: 'Database operation failed' },
-        { status: 500 },
-      );
-    }
-
+    return NextResponse.json({ user: newUser });
+  } catch {
     return NextResponse.json(
-      { error: 'Registration failed. Please try again.' },
+      { errors: [{ message: 'Failed to create session' }] },
       { status: 500 },
     );
   }

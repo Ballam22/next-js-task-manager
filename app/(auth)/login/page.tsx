@@ -1,16 +1,18 @@
-import { findSessionByToken } from '@/database/session';
+import { getValidSessionToken } from '@/database/session';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { LoginForm } from './LoginForm';
 
 export default async function LoginPage() {
-  const sessionToken = (await cookies()).get('sessionToken')?.value;
+  const sessionTokenCookie = (await cookies()).get('sessionToken');
 
-  const session = await findSessionByToken(sessionToken || '');
+  const session =
+    sessionTokenCookie &&
+    (await getValidSessionToken(sessionTokenCookie.value));
+
   if (session) redirect('/dashboard');
   return (
-    <main className="min-h-screen flex itmes-center justify-center p-4">
-      {' '}
+    <main className="min-h-screen flex items-center justify-center p-4">
       <LoginForm />
     </main>
   );

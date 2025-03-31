@@ -1,83 +1,56 @@
 'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from '../../auth.module.css';
-import { registerSchema } from '../../validation/auth';
+import { registerSchema } from '../../validation/schemas';
+import type { RegisterResponseBody } from '../api/register/route';
 
 export default function RegisterSchema() {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<{ message: string }[]>();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
 
-    try {
-      const result = registerSchema.safeParse({ username, email, password });
+    const data: RegisterResponseBody = await response.json();
 
-      if (!result.success) {
-        const errorMessages = result.error.issues
-          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-          .join(', ');
-        throw new Error(errorMessages);
-      }
-    } catch (validationError) {
-      setError(
-        validationError instanceof Error
-          ? validationError.message
-          : 'Validation error',
-      );
-      setIsLoading(false);
+    if ('errors' in data) {
+      setErrors(data.errors);
       return;
     }
 
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
+    // This is not a safe returnTo setup
+    // router.push(
+    //   (props.returnTo) || `/profile/${data.user.username}`,
+    // );
 
-      if (!response.ok) {
-        const errorData: { error?: string } = await response.json();
-        throw new Error(errorData.error || 'Failed to register');
-      }
+    router.push('/dashboard');
 
-      window.location.href = '/login';
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+    router.refresh();
   };
 
   return (
     <div className={styles.authContainer}>
-      <h1 className={styles.authTitle}>Register</h1>
+      <h1 className="font-semibold text-center text-xl mb-2">Register</h1>
 
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <div className={styles.formGroup}>
-          <label htmlFor="username">UserName</label>
+          <label htmlFor="username">Username</label>
           <input
             id="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
             required
           />
         </div>
@@ -91,15 +64,21 @@ export default function RegisterSchema() {
             required
           />
         </div>
-        {error && <div className={styles.errorMessage}>{error}</div>}
 
-        <button className={styles.authButton} disabled={isLoading}>
-          {isLoading ? 'Registering...' : 'Create Account'}
-        </button>
+        <button className={styles.authButton}>Register</button>
+        <div className="font-bold text-red-500">
+          {errors?.map((error) => {
+            return (
+              <div key={`error-${error.message}-${Math.random()}`}>
+                <div>{error.message}</div>
+              </div>
+            );
+          })}
+        </div>
       </form>
       <div className={styles.authSwitch}>
         Already have an account?{' '}
-        <Link href="/api/login" className={styles.authLink}>
+        <Link href="/login" className={styles.authLink}>
           Login here
         </Link>
       </div>
