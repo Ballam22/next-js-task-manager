@@ -1,10 +1,10 @@
-# [Final Project] Agile Project Tracker
+# [Final Project] Task Manager
 
 **Labels:** `final-project` `typescript` `frontend` `backend` `api` `database` `authentication` `testing` `documentation`
 
 ## Description
 
-The Agile Project Tracker is a tool designed for project managers to manage projects, user stories, and tasks in an agile environment. The app includes a dashboard for visualizing progress, task management features, and user interactions—all built with TypeScript.
+The task manager is a tool designed for project managers to manage projects, user stories, and tasks in an agile environment. The app includes a dashboard for visualizing progress, task management features, and user interactions—all built with TypeScript.
 
 ## Minimum Viable Features
 
