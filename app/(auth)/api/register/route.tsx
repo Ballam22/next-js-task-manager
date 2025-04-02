@@ -3,12 +3,10 @@ import { registerSchema } from '@/app/validation/schemas';
 import { createSessionInsecure } from '@/database/session';
 import { createUserInsecure, getUserInsecure } from '@/database/users';
 import { secureCookieOptions } from '@/util/cookies';
-import { formatZodError, isPrismaError } from '@/util/error-utils';
 import { hashPassword } from '@/util/hashedpassword';
 import type { User } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { z, ZodError } from 'zod';
 
 export type RegisterResponseBody =
   | {

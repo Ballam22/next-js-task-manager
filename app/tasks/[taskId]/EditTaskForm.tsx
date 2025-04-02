@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import type { Task } from '@prisma/client';
 import dayjs from 'dayjs';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 type Props = {

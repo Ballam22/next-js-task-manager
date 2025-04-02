@@ -1,16 +1,12 @@
 import crypto from 'node:crypto';
 import { createSessionInsecure } from '@/database/session';
-import {
-  getUserInsecure,
-  getUserWithPasswordHashInsecure,
-} from '@/database/users';
+import { getUserWithPasswordHashInsecure } from '@/database/users';
 import { secureCookieOptions } from '@/util/cookies';
-import { formatZodError, isPrismaError } from '@/util/error-utils';
 import { comparePassword } from '@/util/hashedpassword';
 import type { User } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 import { loginSchema } from '../../../validation/schemas';
 
 export type LoginResponseBody =

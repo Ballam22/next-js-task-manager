@@ -40,9 +40,7 @@ export async function createSessionInsecure(
 }
 
 export async function deleteSession(token: Session['token']) {
-  {
-    return await prisma.session.delete({
-      where: { token },
-    });
-  }
+  return await prisma.session.delete({
+    where: { token },
+  });
 }

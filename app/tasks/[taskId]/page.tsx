@@ -1,4 +1,4 @@
-import { getTask, getTasks } from '@/database/tasks';
+import { getTask } from '@/database/tasks';
 import { getUser } from '@/database/users';
 import { cookies } from 'next/headers';
 import Link from 'next/link';

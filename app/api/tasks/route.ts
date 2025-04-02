@@ -15,10 +15,8 @@ export type TasksResponseBodyPost =
 export async function POST(
   request: Request,
 ): Promise<NextResponse<TasksResponseBodyPost>> {
-  // get body from client and parse it
   const requestBody = await request.json();
 
-  // validate information from client
   const result = taskSchema.omit({ status: true }).safeParse(requestBody);
 
   if (!result.success) {

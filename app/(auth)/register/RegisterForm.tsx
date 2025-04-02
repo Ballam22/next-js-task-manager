@@ -3,14 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from '../../auth.module.css';
-import { registerSchema } from '../../validation/schemas';
 import type { RegisterResponseBody } from '../api/register/route';
 
 export default function RegisterSchema() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,12 +27,6 @@ export default function RegisterSchema() {
       setErrors(data.errors);
       return;
     }
-
-    // This is not a safe returnTo setup
-    // router.push(
-    //   (props.returnTo) || `/profile/${data.user.username}`,
-    // );
-
     router.push('/dashboard');
 
     router.refresh();
