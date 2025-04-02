@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Task } from '@prisma/client';
-import { Copy } from 'lucide-react';
 import Link from 'next/link';
 
 const tabs = [

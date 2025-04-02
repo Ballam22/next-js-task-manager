@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from '../../auth.module.css';
-import { loginSchema } from '../../validation/schemas';
 import type { LoginResponseBody } from '../api/login/route';
 
 export function LoginForm() {
@@ -28,11 +27,6 @@ export function LoginForm() {
       setErrors(data.errors);
       return;
     }
-
-    // This is not a safe returnTo setup
-    // router.push(
-    //   (props.returnTo) || `/profile/${data.user.username}`,
-    // );
 
     router.push('/dashboard');
 

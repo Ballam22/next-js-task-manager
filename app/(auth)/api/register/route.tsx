@@ -28,7 +28,6 @@ export async function POST(
     return NextResponse.json({ errors: result.error.issues }, { status: 400 });
   }
 
-  // 3. Check if user already exist in the database
   const foundUser = await getUserInsecure(result.data.username);
 
   if (foundUser) {

@@ -1,4 +1,4 @@
-import type { Session, User } from '@prisma/client';
+import type { Session } from '@prisma/client';
 import { prisma } from '../util/lib/connect';
 
 export async function getValidSessionToken(sessionToken: Session['token']) {
@@ -39,14 +39,6 @@ export async function createSessionInsecure(
   return session;
 }
 
-/* export async function findSessionByToken(token: string) {
-  {
-    return await prisma.session.findUnique({
-      where: { token },
-    });
-  }
-} */
-
 export async function deleteSession(token: Session['token']) {
   {
     return await prisma.session.delete({
@@ -54,17 +46,3 @@ export async function deleteSession(token: Session['token']) {
     });
   }
 }
-
-/* export async function getSessionWithUser(token: Session['token']) {
-  return await prisma.session.findUnique({
-    where: { token },
-    include: { user: true },
-  });
-}
- */
-/* export async function getUserWithSessions(userId: User['id']) {
-  return await prisma.user.findUnique({
-    where: { id: userId },
-    include: { sessions: true },
-  });
-} */

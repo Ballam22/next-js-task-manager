@@ -21,8 +21,6 @@ export async function POST(
   // validate information from client
   const result = taskSchema.omit({ status: true }).safeParse(requestBody);
 
-  // If client sends request body with incorrect data,
-  // return a response with a 400 status code to the client
   if (!result.success) {
     return NextResponse.json(
       {

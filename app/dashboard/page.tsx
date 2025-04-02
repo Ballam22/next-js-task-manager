@@ -16,7 +16,6 @@ export default async function DashboardPage() {
   const ongoingTasks = allTasks.filter((task) => task.status === 'ongoing');
   const completedTasks = allTasks.filter((task) => task.status === 'completed');
 
-  // const experiences = await getNewestExperiencesInsecure();
   return (
     <>
       <h1>Welcome, {user.username}</h1>
