@@ -1,4 +1,3 @@
-import { getTasks } from '@/database/tasks';
 import { getUser } from '@/database/users';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';

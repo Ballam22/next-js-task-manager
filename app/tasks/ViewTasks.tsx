@@ -31,7 +31,7 @@ export default function ViewTasks({ tasks }: Props) {
       <TabsList className="p-1 h-auto bg-background gap-1 border">
         {tabs.map((tab) => (
           <TabsTrigger
-            key={tab.value}
+            key={`tab-${tab.value}`}
             value={tab.value}
             className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
           >
@@ -61,34 +61,32 @@ export default function ViewTasks({ tasks }: Props) {
       <TabsContent value="ongoing">
         <div>
           <div className="">
-            {ongoingTasks &&
-              ongoingTasks.map((task) => {
-                return (
-                  <div key={`id-${task.id}`} className="my-2">
-                    <Link href={`/tasks/${task.id}`}>
-                      <p>{task.title}</p>
-                      <p>{task.date.toLocaleDateString()}</p>
-                    </Link>
-                  </div>
-                );
-              })}
+            {ongoingTasks.map((task) => {
+              return (
+                <div key={`id-${task.id}`} className="my-2">
+                  <Link href={`/tasks/${task.id}`}>
+                    <p>{task.title}</p>
+                    <p>{task.date.toLocaleDateString()}</p>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </TabsContent>
       <TabsContent value="completed">
         <div>
           <div className="">
-            {completedTasks &&
-              completedTasks.map((task) => {
-                return (
-                  <div key={`id-${task.id}`} className="my-2">
-                    <Link href={`/tasks/${task.id}`}>
-                      <p>{task.title}</p>
-                      <p>{task.date.toLocaleDateString()}</p>
-                    </Link>
-                  </div>
-                );
-              })}
+            {completedTasks.map((task) => {
+              return (
+                <div key={`id-${task.id}`} className="my-2">
+                  <Link href={`/tasks/${task.id}`}>
+                    <p>{task.title}</p>
+                    <p>{task.date.toLocaleDateString()}</p>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </TabsContent>
