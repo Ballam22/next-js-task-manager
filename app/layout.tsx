@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Task Manager',
+  title: {
+    default: 'Task Manager',
+    template: '%s | Task MAnager',
+  },
   description:
     'Organize your work and life with TaskFlow. Create, track, and manage tasks with ease. Stay productive and never miss a deadline.',
 };

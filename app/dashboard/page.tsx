@@ -3,7 +3,17 @@ import { getUser } from '@/database/users';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import type { Metadata } from 'next/types';
 import LogoutButton from './LogoutButton';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Dashboard Page',
+    template: '%s | Task MAnager',
+  },
+  description:
+    'Organize your work and life with TaskFlow. Create, track, and manage tasks with ease. Stay productive and never miss a deadline.',
+};
 
 export default async function DashboardPage() {
   const sessionTokenCookie = (await cookies()).get('sessionToken');

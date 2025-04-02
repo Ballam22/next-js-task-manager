@@ -44,6 +44,7 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
+  // This is a JSX component alias so PascalCase is intentional
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const Comp = asChild ? Slot : 'button';
 
