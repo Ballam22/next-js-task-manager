@@ -9,7 +9,8 @@
     "lint": "next lint",
     "migrate": "ley --require tsx/cjs",
     "start": "next start",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
@@ -40,6 +41,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.1",
     "@tailwindcss/postcss": "^4.0.14",
     "@ts-safeql/eslint-plugin": "^3.6.8",
     "@types/bcrypt": "^5.0.2",

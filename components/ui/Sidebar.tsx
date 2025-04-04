@@ -27,7 +27,7 @@ const navItems = [
   },
   { name: 'Tasks', href: '/tasks', icon: <ListTodo size={18} /> },
   { name: 'About', href: '/about', icon: <Info size={18} /> },
-  { name: 'Contact', href: '/contact', icon: <Mail size={18} /> },
+  { name: 'Contact Us', href: '/contact', icon: <Mail size={18} /> },
 ];
 
 export default function SidebarLayout({

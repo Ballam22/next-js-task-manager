@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact | Task Manager',
+  title: 'Contact us',
   description: 'Get in touch with the Task Manager team.',
 };
 

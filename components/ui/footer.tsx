@@ -12,7 +12,7 @@ export default function Footer() {
       </p>
       <div className="flex gap-4">
         <Link
-          href="https://github.com/your-username"
+          href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-primary transition-colors"
@@ -20,7 +20,7 @@ export default function Footer() {
           <Github size={20} />
         </Link>
         <Link
-          href="https://www.linkedin.com/in/your-profile"
+          href="https://www.linkedin.com/feed/?trk=onboarding-landing"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-primary transition-colors"
