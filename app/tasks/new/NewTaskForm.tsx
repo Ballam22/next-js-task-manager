@@ -1,4 +1,5 @@
 'use client';
+
 import type { TasksResponseBodyPost } from '@/app/api/tasks/route';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +32,6 @@ export default function NewTaskForm() {
 
     if (!response.ok) {
       const responseBody: TasksResponseBodyPost = await response.json();
-
       if ('error' in responseBody) {
         setErrorMessage(responseBody.error);
         return;
@@ -48,12 +48,8 @@ export default function NewTaskForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-white via-slate-50 to-slate-100 animate-in fade-in duration-700">
+    <div className="w-full flex justify-center">
       <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-blue-600 text-center mb-6">
-          Create a New Task
-        </h1>
-
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <div>
             <Label htmlFor="title">Title</Label>

@@ -29,7 +29,7 @@ export default async function DashboardPage() {
   const completedTasks = allTasks.filter((task) => task.status === 'completed');
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-slate-100 p-10 animate-fade-up animate-duration-700">
+    <main className="p-6 md:p-10 animate-fade-up animate-duration-700">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl font-bold text-gray-800 text-center">
           Welcome back, <span className="text-blue-600">{user.username}</span>
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-between items-center">
           <Link href="/tasks">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               View All Tasks

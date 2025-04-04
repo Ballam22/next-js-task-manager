@@ -39,8 +39,8 @@ export default function SidebarLayout({
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="hidden md:flex md:flex-col w-64 bg-white border-r shadow-sm">
+    <div className="flex min-h-screen relative">
+      <aside className="hidden md:flex md:flex-col w-64 bg-white border-r shadow-sm relative">
         <div className="p-4 text-xl font-bold text-blue-600">Task Manager</div>
         <nav className="flex flex-col gap-1 p-2">
           {navItems.map((item) => (
@@ -59,10 +59,13 @@ export default function SidebarLayout({
           ))}
         </nav>
         <div className="mt-auto p-4">
-          <div className="p-4">
-            <LogoutButton />
-          </div>
+          <LogoutButton />
         </div>
+        <img
+          src="/tasks.jpg"
+          alt="Task illustration"
+          className="absolute bottom-0 right-0 w-32 opacity-60"
+        />
       </aside>
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -115,8 +118,9 @@ export default function SidebarLayout({
           </div>
         </SheetContent>
       </Sheet>
+
       <div className="flex-1 flex flex-col min-h-screen">
-        <main className="flex-grow p-4 md:p-8 bg-background text-foreground w-full">
+        <main className="flex-grow p-4 md:p-8 bg-slate-50 text-foreground w-full">
           {children}
         </main>
         <Footer />

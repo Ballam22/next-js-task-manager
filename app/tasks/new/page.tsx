@@ -22,8 +22,8 @@ export default async function NewTaskPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-slate-100 px-4 py-16 flex flex-col items-center justify-start animate-in fade-in duration-700">
-      <div className="w-full max-w-xl space-y-8">
+    <main className="p-6 md:p-10 animate-in fade-in duration-700">
+      <div className="max-w-xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold text-center text-blue-600">
           Add a New Task
         </h1>
