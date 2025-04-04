@@ -7,7 +7,6 @@ import {
   Info,
   LayoutDashboard,
   ListTodo,
-  LogOut,
   Mail,
   Menu,
   X,
@@ -15,7 +14,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import LogoutButton from './LogoutButton';
+import LogoutButton from './ui/LogoutButton';
 
 const navItems = [
   { name: 'Home', href: '/', icon: <Home size={18} /> },
@@ -28,6 +27,7 @@ const navItems = [
   { name: 'About', href: '/about', icon: <Info size={18} /> },
   { name: 'Contact', href: '/contact', icon: <Mail size={18} /> },
 ];
+console.log(navItems);
 
 export default function SidebarLayout({
   children,
@@ -39,17 +39,18 @@ export default function SidebarLayout({
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden md:flex md:flex-col w-64 bg-white border-r shadow-sm">
-        <div className="p-4 text-xl font-bold text-blue-600">Task Manager</div>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex md:flex-col w-64 bg-background border-r border-border">
+        <div className="p-4 text-xl font-bold text-primary">Task Manager</div>
         <nav className="flex flex-col gap-1 p-2">
           {navItems.map((item) => (
             <Link
               key={`nav-${item.name}`}
-              href={item.href as any}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-blue-100 hover:text-blue-700 text-sm font-medium ${
+              href={{ pathname: item.href }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground text-sm font-medium ${
                 pathname === item.href
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-700'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-muted-foreground'
               }`}
             >
               {item.icon}
@@ -57,24 +58,18 @@ export default function SidebarLayout({
             </Link>
           ))}
         </nav>
-        <div className="mt-auto p-4">
-          <div className="p-4">
-            <LogoutButton />
-          </div>
-        </div>
       </aside>
 
+      {/* Mobile Sidebar Sheet */}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="md:hidden m-4">
             <Menu />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-64 bg-white p-0">
+        <SheetContent side="left" className="w-64 p-0 bg-background">
           <div className="flex items-center justify-between p-4">
-            <span className="text-xl font-bold text-blue-600">
-              Task Manager
-            </span>
+            <span className="text-xl font-bold text-primary">Task Manager</span>
             <Button
               variant="ghost"
               size="icon"
@@ -86,13 +81,13 @@ export default function SidebarLayout({
           <nav className="flex flex-col gap-1 p-2">
             {navItems.map((item) => (
               <Link
-                key={`nav-${item.name}`}
-                href={item.href as any}
+                key={`nav-mobile-${item.name}`}
+                href={{ pathname: item.href }}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-blue-100 hover:text-blue-700 text-sm font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground text-sm font-medium ${
                   pathname === item.href
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-700'
+                    ? 'bg-accent text-accent-foreground'
+                    : 'text-muted-foreground'
                 }`}
               >
                 {item.icon}
@@ -101,21 +96,13 @@ export default function SidebarLayout({
             ))}
           </nav>
           <div className="p-4">
-            <Button
-              variant="destructive"
-              className="w-full"
-              onClick={async () => {
-                await fetch('/api/logout', { method: 'POST' });
-                window.location.href = '/login';
-              }}
-            >
-              <LogOut className="mr-2 h-4 w-4" /> Logout
-            </Button>
+            <LogoutButton />
           </div>
         </SheetContent>
       </Sheet>
 
-      <main className="flex-1 p-4 md:p-8 bg-slate-50 overflow-y-auto w-full">
+      {/* Main Content */}
+      <main className="flex-1 p-4 md:p-8 bg-background text-foreground w-full">
         {children}
       </main>
     </div>
