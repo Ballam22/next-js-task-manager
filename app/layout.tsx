@@ -15,6 +15,9 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: { default: 'Task Manager', template: '%s | Task Manager' },
   description: 'Organize your work and life with TaskFlow...',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({

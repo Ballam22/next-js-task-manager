@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Footer from '@/components/ui/footer';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   Home,
@@ -27,7 +28,6 @@ const navItems = [
   { name: 'About', href: '/about', icon: <Info size={18} /> },
   { name: 'Contact', href: '/contact', icon: <Mail size={18} /> },
 ];
-console.log(navItems);
 
 export default function SidebarLayout({
   children,
@@ -39,7 +39,6 @@ export default function SidebarLayout({
 
   return (
     <div className="flex min-h-screen">
-      {/* Desktop Sidebar */}
       <aside className="hidden md:flex md:flex-col w-64 bg-background border-r border-border">
         <div className="p-4 text-xl font-bold text-primary">Task Manager</div>
         <nav className="flex flex-col gap-1 p-2">
@@ -58,9 +57,11 @@ export default function SidebarLayout({
             </Link>
           ))}
         </nav>
+        <div className="mt-auto p-4">
+          <LogoutButton />
+        </div>
       </aside>
 
-      {/* Mobile Sidebar Sheet */}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="md:hidden m-4">
@@ -100,9 +101,10 @@ export default function SidebarLayout({
           </div>
         </SheetContent>
       </Sheet>
-
-      {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 bg-background text-foreground w-full">
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Footer />
+      </div>
+      <main className="flex-1 p-4 md:p-8 bg-slate-50 overflow-y-auto w-full">
         {children}
       </main>
     </div>

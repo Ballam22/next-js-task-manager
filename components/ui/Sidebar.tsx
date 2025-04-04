@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Footer from '@/components/ui/footer';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   Home,
@@ -114,10 +115,12 @@ export default function SidebarLayout({
           </div>
         </SheetContent>
       </Sheet>
-
-      <main className="flex-1 p-4 md:p-8 bg-slate-50 overflow-y-auto w-full">
-        {children}
-      </main>
+      <div className="flex-1 flex flex-col min-h-screen">
+        <main className="flex-grow p-4 md:p-8 bg-background text-foreground w-full">
+          {children}
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
