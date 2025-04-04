@@ -28,7 +28,6 @@ export default function EditTaskForm({ task }: Props) {
   const [title, setTitle] = useState(task.title);
   const [date, setDate] = useState(dayjs(task.date).format('YYYY-MM-DD'));
   const [status, setStatus] = useState(task.status);
-
   const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
@@ -45,7 +44,6 @@ export default function EditTaskForm({ task }: Props) {
 
     if (!response.ok) {
       const responseBody: TaskResponseBodyPut = await response.json();
-
       if ('error' in responseBody) {
         setErrorMessage(responseBody.error);
         return;
@@ -70,7 +68,6 @@ export default function EditTaskForm({ task }: Props) {
 
     if (!response.ok) {
       const responseBody: TaskResponseBodyDelete = await response.json();
-
       const newErrorMessage =
         'error' in responseBody ? responseBody.error : 'Error deleting task';
 
@@ -88,9 +85,9 @@ export default function EditTaskForm({ task }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex justify-center px-4 py-10 bg-background text-foreground">
-      <div className="w-full max-w-xl rounded-2xl border border-border bg-card text-foreground p-8 shadow-sm mt-10">
-        <h1 className="text-3xl font-bold text-center text-primary mb-6">
+    <div className="flex justify-center px-4 py-16 bg-transparent text-foreground">
+      <div className="w-full max-w-xl min-h-[300px] rounded-2xl border border-border bg-card text-foreground p-8 shadow-sm">
+        <h1 className="text-2xl font-bold text-center text-primary mb-6">
           Edit Task
         </h1>
 
