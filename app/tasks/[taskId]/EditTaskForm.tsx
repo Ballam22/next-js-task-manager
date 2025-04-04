@@ -88,15 +88,13 @@ export default function EditTaskForm({ task }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-white via-slate-50 to-slate-100">
-      <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+    <div className="min-h-screen flex justify-center px-4 py-10 bg-background text-foreground">
+      <div className="w-full max-w-xl rounded-2xl border border-border bg-card text-foreground p-8 shadow-sm mt-10">
+        <h1 className="text-3xl font-bold text-center text-primary mb-6">
           Edit Task
         </h1>
 
         <form className="space-y-6" onSubmit={handleFormSubmit}>
-          {/* ... keep inputs as is ... */}
-
           <div>
             <Label htmlFor="title">Title</Label>
             <Input
@@ -130,9 +128,15 @@ export default function EditTaskForm({ task }: Props) {
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="upcoming">Upcoming</SelectItem>
-                <SelectItem value="ongoing">Ongoing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="upcoming" className="text-yellow-600">
+                  Upcoming
+                </SelectItem>
+                <SelectItem value="ongoing" className="text-orange-600">
+                  Ongoing
+                </SelectItem>
+                <SelectItem value="completed" className="text-green-600">
+                  Completed
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>

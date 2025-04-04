@@ -3,7 +3,6 @@ import { getUser } from '@/database/users';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import NewTaskButton from './NewTaskButton';
 import ViewTasks from './ViewTasks';
 
 export const metadata: Metadata = {
@@ -25,7 +24,6 @@ export default async function TasksPage() {
   return (
     <>
       <h1>Tasks</h1>
-      <NewTaskButton />
       <ViewTasks tasks={tasks} />
     </>
   );

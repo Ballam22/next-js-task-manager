@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { logout } from '../(auth)/logout/actions';
+import { logout } from '../../app/(auth)/logout/actions';
 
 export default function LogoutButton() {
   const router = useRouter();

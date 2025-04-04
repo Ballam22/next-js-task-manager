@@ -60,9 +60,12 @@ export default function ViewTasks({ tasks }: Props) {
 
   const getStatusTag = (status: string) => {
     const styles = {
-      upcoming: 'bg-yellow-100 text-yellow-800',
-      ongoing: 'bg-orange-100 text-orange-800',
-      completed: 'bg-green-100 text-green-800',
+      upcoming:
+        'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+      ongoing:
+        'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
+      completed:
+        'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200',
     };
 
     return (
@@ -77,7 +80,6 @@ export default function ViewTasks({ tasks }: Props) {
   return (
     <div className="w-full max-w-3xl mx-auto mt-10 px-4">
       <Tabs defaultValue="upcoming" className="w-full">
-        {/* Top Bar: Search + Sort + Add */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
           <Input
             placeholder="Search tasks..."
@@ -87,7 +89,7 @@ export default function ViewTasks({ tasks }: Props) {
           />
 
           <div className="flex gap-2 items-center">
-            <Label className="text-sm font-medium text-gray-600">
+            <Label className="text-sm font-medium text-muted-foreground">
               Sort by:
             </Label>
             <Select
@@ -111,9 +113,8 @@ export default function ViewTasks({ tasks }: Props) {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="flex justify-center mb-6">
-          <TabsList className="p-2 rounded-lg bg-white shadow-md gap-2">
+          <TabsList className="p-2 rounded-lg bg-card shadow-md gap-2">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={`tab-${tab.value}`}
@@ -121,7 +122,7 @@ export default function ViewTasks({ tasks }: Props) {
                 className="px-4 py-1 rounded-md text-sm font-semibold transition-all data-[state=active]:bg-blue-600 data-[state=active]:text-white"
               >
                 {tab.name}{' '}
-                <span className="ml-1 text-xs text-gray-500">
+                <span className="ml-1 text-xs text-muted-foreground">
                   ({filteredAndSorted[tab.value]?.length ?? 0})
                 </span>
               </TabsTrigger>
@@ -129,7 +130,6 @@ export default function ViewTasks({ tasks }: Props) {
           </TabsList>
         </div>
 
-        {/* Tab Content */}
         {Object.entries(filteredAndSorted).map(([status, list]) => (
           <TabsContent
             key={`tab-${status}`}
@@ -143,20 +143,20 @@ export default function ViewTasks({ tasks }: Props) {
                     <Card
                       className={`border-l-4 transition-all hover:shadow-md ${
                         status === 'upcoming'
-                          ? 'border-yellow-400'
+                          ? 'border-yellow-500 dark:border-yellow-300'
                           : status === 'ongoing'
-                            ? 'border-orange-500'
-                            : 'border-green-500'
+                            ? 'border-orange-500 dark:border-orange-300'
+                            : 'border-green-500 dark:border-green-300'
                       }`}
                     >
                       <CardContent className="p-4 space-y-1">
                         <div className="flex justify-between items-center">
-                          <h3 className="text-lg font-semibold text-gray-800">
+                          <h3 className="text-lg font-semibold text-foreground">
                             {task.title}
                           </h3>
                           {getStatusTag(task.status)}
                         </div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {new Date(task.date).toLocaleDateString()}
                         </p>
                       </CardContent>
@@ -165,7 +165,7 @@ export default function ViewTasks({ tasks }: Props) {
                 ))}
               </div>
             ) : (
-              <p className="mt-4 text-center text-gray-500 italic">
+              <p className="mt-4 text-center text-muted-foreground italic">
                 No {status} tasks match your filters.
               </p>
             )}

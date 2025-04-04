@@ -1,67 +1,90 @@
+import { getTasks } from '@/database/tasks';
+import { getUser } from '@/database/users';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
-import type { Metadata } from 'next/types';
+import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Home Page | Task Manager',
-    template: '%s | Task MAnager',
-  },
-  description:
-    'Organize your work and life with TaskFlow. Create, track, and manage tasks with ease. Stay productive and never miss a deadline.',
-};
+export default async function Home() {
+  const sessionToken = (await cookies()).get('sessionToken')?.value;
+  const user = sessionToken && (await getUser(sessionToken));
+  const tasks = sessionToken ? await getTasks(sessionToken) : [];
 
-export default function Home() {
+  if (!user) {
+    redirect('/login');
+  }
+
+  const upcoming = tasks.filter((t) => t.status === 'upcoming').length;
+  const ongoing = tasks.filter((t) => t.status === 'ongoing').length;
+  const completed = tasks.filter((t) => t.status === 'completed').length;
+
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-white via-slate-50 to-slate-100">
-      <aside className="w-64 bg-white border-r border-gray-200 p-6 shadow-md animate-fade-right animate-duration-500">
-        <div className="text-2xl font-extrabold text-blue-600 mb-8 tracking-tight">
-          Task Manager
-        </div>
-        <nav className="flex flex-col gap-4">
-          <Link
-            href={'/' as const}
-            className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
-          >
-            Home
-          </Link>
-          <Link
-            href={'/dashboard' as const}
-            className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href={'/tasks' as const}
-            className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
-          >
-            Tasks
-          </Link>
-        </nav>
-      </aside>
+    <div className="flex flex-col items-center justify-start px-6 py-12 max-w-4xl mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-2">
+        Welcome to our <span className="text-blue-600">Task Manager</span> site
+      </h1>
+      <p className="text-center text-muted-foreground mb-8">
+        Manage your projects, organize your day, and stay on top of your goals —
+        all in one place.
+      </p>
 
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between shadow-sm animate-fade-down animate-duration-500">
-          <div className="text-lg font-semibold text-gray-800">Welcome</div>
-          <div className="flex items-center gap-4">
-            <Link
-              href={'/login' as const}
-              className="text-white bg-blue-600 px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-200"
-            >
-              Login
-            </Link>
-          </div>
-        </header>
-        <main className="p-10 flex-1 bg-gray-50 animate-fade-up animate-duration-700">
-          <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">
-            Welcome to our <span className="text-blue-600">Task Manager</span>{' '}
-            site
-          </h1>
-          <p className="text-center text-gray-600 max-w-xl mx-auto">
-            Manage your projects, organize your day, and stay on top of your
-            goals — all in one place.
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8 w-full">
+        <div className="rounded-xl bg-white dark:bg-muted p-4 shadow text-center">
+          <p className="text-2xl font-bold">{tasks.length}</p>
+          <p className="text-sm text-muted-foreground">Total Tasks</p>
+        </div>
+        <div className="rounded-xl bg-yellow-100 dark:bg-yellow-900 p-4 shadow text-center">
+          <p className="text-2xl font-bold">{upcoming}</p>
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            📌 Upcoming
           </p>
-        </main>
+        </div>
+        <div className="rounded-xl bg-orange-100 dark:bg-orange-900 p-4 shadow text-center">
+          <p className="text-2xl font-bold">{ongoing}</p>
+          <p className="text-sm text-orange-800 dark:text-orange-200">
+            🔥 Ongoing
+          </p>
+        </div>
+        <div className="rounded-xl bg-green-100 dark:bg-green-900 p-4 shadow text-center">
+          <p className="text-2xl font-bold">{completed}</p>
+          <p className="text-sm text-green-800 dark:text-green-200">
+            ✅ Completed
+          </p>
+        </div>
       </div>
+
+      <div className="flex gap-4 mb-10">
+        <Link
+          href="/tasks/new"
+          className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+        >
+          + Add New Task
+        </Link>
+        <Link
+          href="/tasks"
+          className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+        >
+          View All Tasks
+        </Link>
+      </div>
+
+      {tasks.length > 0 && (
+        <div className="w-full mt-4">
+          <h2 className="text-xl font-semibold mb-3">Recent Tasks</h2>
+          <ul className="space-y-2">
+            {tasks.slice(0, 3).map((task) => (
+              <li
+                key={`task-${task.id}`}
+                className="bg-muted p-4 rounded-md shadow-sm flex justify-between items-center"
+              >
+                <span className="font-medium">{task.title}</span>
+                <span className="text-sm text-muted-foreground">
+                  {new Date(task.date).toLocaleDateString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

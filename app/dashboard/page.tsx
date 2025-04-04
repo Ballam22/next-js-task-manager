@@ -6,7 +6,6 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import LogoutButton from './LogoutButton';
 
 export const metadata: Metadata = {
   title: {
@@ -61,7 +60,6 @@ export default async function DashboardPage() {
               View All Tasks
             </Button>
           </Link>
-          <LogoutButton />
         </div>
       </div>
     </main>
