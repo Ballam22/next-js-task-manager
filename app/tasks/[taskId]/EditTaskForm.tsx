@@ -18,6 +18,7 @@ import type { Task } from '@prisma/client';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   task: Task;
@@ -37,11 +38,7 @@ export default function EditTaskForm({ task }: Props) {
 
     const response = await fetch(`/api/tasks/${task.id}`, {
       method: 'PUT',
-      body: JSON.stringify({
-        title,
-        date,
-        status,
-      }),
+      body: JSON.stringify({ title, date, status }),
     });
 
     setErrorMessage('');
@@ -54,7 +51,14 @@ export default function EditTaskForm({ task }: Props) {
         return;
       }
     }
-    router.push('/tasks');
+
+    toast.success('Task updated', {
+      description: 'Your changes were saved.',
+    });
+
+    setTimeout(() => {
+      router.push('/tasks');
+    }, 1000);
   }
 
   async function handleDeleteButtonClicked() {
@@ -65,70 +69,93 @@ export default function EditTaskForm({ task }: Props) {
     setErrorMessage('');
 
     if (!response.ok) {
-      let newErrorMessage = 'Error deleting task';
-
       const responseBody: TaskResponseBodyDelete = await response.json();
 
-      if ('error' in responseBody) {
-        newErrorMessage = responseBody.error;
-      }
+      const newErrorMessage =
+        'error' in responseBody ? responseBody.error : 'Error deleting task';
 
       setErrorMessage(newErrorMessage);
       return;
     }
 
-    router.push('/tasks');
+    toast.success('Task deleted', {
+      description: 'The task has been removed.',
+    });
+
+    setTimeout(() => {
+      router.push('/tasks');
+    }, 1000);
   }
 
   return (
-    <div>
-      <form className="max-w-[500px]" onSubmit={handleFormSubmit}>
-        <div>
-          <Label htmlFor="title">Title</Label>
-          <Input
-            id="title"
-            name="title"
-            value={title}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="date">Date</Label>
-          <Input
-            id="date"
-            name="date"
-            type="date"
-            value={date}
-            onChange={(event) => setDate(event.currentTarget.value)}
-          />
-        </div>
-        <Label>Status</Label>
-        <Select
-          defaultValue={status}
-          onValueChange={(value: 'upcoming' | 'ongoing' | 'completed') => {
-            setStatus(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="upcoming">Upcoming</SelectItem>
-            <SelectItem value="ongoing">Ongoing</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button className="cursor-pointer">Update</Button>
-        <Button
-          className="cursor-pointer"
-          variant="destructive"
-          type="button"
-          onClick={handleDeleteButtonClicked}
-        >
-          Delete
-        </Button>
-        <div className="font-bold text-red-500">{errorMessage}</div>
-      </form>
+    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-white via-slate-50 to-slate-100">
+      <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+          Edit Task
+        </h1>
+
+        <form className="space-y-6" onSubmit={handleFormSubmit}>
+          {/* ... keep inputs as is ... */}
+
+          <div>
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              name="title"
+              value={title}
+              onChange={(event) => setTitle(event.currentTarget.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              name="date"
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.currentTarget.value)}
+            />
+          </div>
+
+          <div>
+            <Label>Status</Label>
+            <Select
+              defaultValue={status}
+              onValueChange={(value: 'upcoming' | 'ongoing' | 'completed') => {
+                setStatus(value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="upcoming">Upcoming</SelectItem>
+                <SelectItem value="ongoing">Ongoing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <Button className="w-full sm:w-auto">Update</Button>
+            <Button
+              className="w-full sm:w-auto"
+              variant="destructive"
+              type="button"
+              onClick={handleDeleteButtonClicked}
+            >
+              Delete
+            </Button>
+          </div>
+
+          {errorMessage && (
+            <div className="text-center font-semibold text-red-500">
+              {errorMessage}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
