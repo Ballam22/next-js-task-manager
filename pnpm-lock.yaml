@@ -50,6 +50,9 @@ importers:
       dotenv-safe:
         specifier: ^9.1.0
         version: 9.1.0(dotenv@8.6.0)
+      esbuild:
+        specifier: 0.25.2
+        version: 0.25.2
       lucide-react:
         specifier: ^0.483.0
         version: 0.483.0(react@19.1.0)
