@@ -27,7 +27,7 @@ export default function ContactPage() {
         <li>
           <strong>Phone:</strong>{' '}
           <a href="tel:+43123456789" className="text-blue-600 hover:underline">
-            +43 699 614 64939
+            +43 677 614 64939
           </a>
         </li>
         <li>

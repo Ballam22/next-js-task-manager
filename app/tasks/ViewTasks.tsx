@@ -1,6 +1,128 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { SortableTask } from '@/components/ui/SortableTask';
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import type { Task } from '@prisma/client';
+import Link from 'next/link';
+import { useState } from 'react';
+
+const statuses = ['upcoming', 'ongoing', 'completed'] as const;
+
+type Props = {
+  tasks: Task[];
+};
+
+export default function ViewTasks({ tasks }: Props) {
+  const [columns, setColumns] = useState(
+    statuses.reduce(
+      (acc, status) => {
+        acc[status] = tasks.filter((task) => task.status === status);
+        return acc;
+      },
+      {} as Record<(typeof statuses)[number], Task[]>,
+    ),
+  );
+
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const fromColumn = statuses.find((status) =>
+      columns[status].some((task) => task.id === active.id),
+    );
+    const toColumn = statuses.find((status) =>
+      columns[status].some((task) => task.id === over.id),
+    );
+
+    if (!fromColumn || !toColumn) return;
+
+    const activeTask = columns[fromColumn].find(
+      (task) => task.id === active.id,
+    );
+    if (!activeTask) return;
+
+    const updatedFrom = columns[fromColumn].filter(
+      (task) => task.id !== active.id,
+    );
+    const overIndex = columns[toColumn].findIndex(
+      (task) => task.id === over.id,
+    );
+    const updatedTo = [...columns[toColumn]];
+    updatedTo.splice(overIndex, 0, activeTask);
+
+    setColumns({
+      ...columns,
+      [fromColumn]: updatedFrom,
+      [toColumn]: updatedTo.map((task) =>
+        task.id === active.id ? { ...task, status: toColumn } : task,
+      ),
+    });
+  };
+
+  return (
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <Input placeholder="Search tasks..." className="w-1/2" />
+        <Link href="/tasks/new">
+          <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            + Add Task
+          </Button>
+        </Link>
+      </div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {statuses.map((status) => (
+            <div
+              key={`status-${status}`}
+              className="bg-muted p-4 rounded-xl shadow-md"
+            >
+              <h2 className="text-xl font-bold capitalize mb-4">
+                {status}{' '}
+                <span className="text-sm text-muted-foreground">
+                  ({columns[status].length})
+                </span>
+              </h2>
+              <SortableContext
+                items={columns[status].map((task) => task.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="space-y-4">
+                  {columns[status].map((task) => (
+                    <SortableTask key={`task-${task.id}`} task={task} />
+                  ))}
+                </div>
+              </SortableContext>
+            </div>
+          ))}
+        </div>
+      </DndContext>
+    </div>
+  );
+}
+
+/* 'use client';
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -175,3 +297,4 @@ export default function ViewTasks({ tasks }: Props) {
     </div>
   );
 }
+ */

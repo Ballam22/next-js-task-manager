@@ -27,7 +27,7 @@ const navItems = [
   },
   { name: 'Tasks', href: '/tasks', icon: <ListTodo size={18} /> },
   { name: 'About', href: '/about', icon: <Info size={18} /> },
-  { name: 'Contact Us', href: '/contact', icon: <Mail size={18} /> },
+  { name: 'Contact', href: '/contact', icon: <Mail size={18} /> },
 ];
 
 export default function SidebarLayout({
@@ -38,92 +38,95 @@ export default function SidebarLayout({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  return (
-    <div className="flex min-h-screen relative">
-      <aside className="hidden md:flex md:flex-col w-64 bg-white border-r shadow-sm relative">
-        <div className="p-4 text-xl font-bold text-blue-600">Task Manager</div>
-        <nav className="flex flex-col gap-1 p-2">
-          {navItems.map((item) => (
-            <Link
-              key={`nav-${item.name}`}
-              href={item.href as any}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-blue-100 hover:text-blue-700 text-sm font-medium ${
-                pathname === item.href
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-700'
-              }`}
-            >
-              {item.icon}
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-        <div className="mt-auto p-4">
-          <LogoutButton />
-        </div>
-        <img
-          src="/tasks.jpg"
-          alt="Task illustration"
-          className="absolute bottom-0 right-0 w-32 opacity-60"
-        />
-      </aside>
+  // Don't show sidebar on public pages
+  const isPublicPage = ['/login', '/register'].includes(pathname);
 
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden m-4">
-            <Menu />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 bg-white p-0">
-          <div className="flex items-center justify-between p-4">
-            <span className="text-xl font-bold text-blue-600">
-              Task Manager
-            </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(false)}
-            >
-              <X />
-            </Button>
-          </div>
+  return (
+    <div className="flex min-h-screen">
+      {!isPublicPage && (
+        <aside className="hidden md:flex md:flex-col w-64 bg-background border-r border-border">
+          <div className="p-4 text-xl font-bold text-primary">Task Manager</div>
           <nav className="flex flex-col gap-1 p-2">
             {navItems.map((item) => (
               <Link
-                key={`nav-${item.name}`}
-                href={item.href as any}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:bg-blue-100 hover:text-blue-700 text-sm font-medium ${
+                key={`navitem-${item.name}`}
+                href={{ pathname: item.href }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium
+                ${
                   pathname === item.href
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-700'
-                }`}
+                    ? 'bg-accent text-accent-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                }
+              `}
               >
                 {item.icon}
                 {item.name}
               </Link>
             ))}
           </nav>
-          <div className="p-4">
-            <Button
-              variant="destructive"
-              className="w-full"
-              onClick={async () => {
-                await fetch('/api/logout', { method: 'POST' });
-                window.location.href = '/login';
-              }}
-            >
-              <LogOut className="mr-2 h-4 w-4" /> Logout
-            </Button>
+          <div className="mt-auto p-4">
+            <LogoutButton />
           </div>
-        </SheetContent>
-      </Sheet>
+        </aside>
+      )}
 
-      <div className="flex-1 flex flex-col min-h-screen">
-        <main className="flex-grow p-4 md:p-8 bg-slate-50 text-foreground w-full">
-          {children}
-        </main>
-        <Footer />
+      {!isPublicPage && (
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden m-4">
+              <Menu />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 p-0 bg-background">
+            <div className="flex items-center justify-between p-4">
+              <span className="text-xl font-bold text-primary">
+                Task Manager
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+              >
+                <X />
+              </Button>
+            </div>
+            <nav className="flex flex-col gap-1 p-2">
+              {navItems.map((item) => (
+                <Link
+                  key={`navitem-${item.name}`}
+                  href={{ pathname: item.href }}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium
+                    ${
+                      pathname === item.href
+                        ? 'bg-accent text-accent-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    }
+                  `}
+                >
+                  {item.icon}
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+            <div className="p-4">
+              <Button
+                variant="destructive"
+                className="w-full"
+                onClick={async () => {
+                  await fetch('/api/logout', { method: 'POST' });
+                  window.location.href = '/login';
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" /> Logout
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
+      <div className="flex-1 flex flex-col min-h-screen bg-background text-foreground">
+        <main className="flex-grow p-4 md:p-8 w-full">{children}</main>
+        {!isPublicPage && <Footer />}
       </div>
     </div>
   );
