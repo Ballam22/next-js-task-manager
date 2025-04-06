@@ -55,7 +55,7 @@ export async function POST(
 
   if (!validPassword) {
     return NextResponse.json(
-      { errors: [{ message: 'Invalid credentials' }] },
+      { errors: [{ message: 'Invalid password' }] },
       { status: 401 },
     );
   }

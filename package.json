@@ -43,6 +43,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@jest/globals": "30.0.0-alpha.7",
     "@playwright/test": "^1.51.1",
     "@tailwindcss/postcss": "^4.0.14",
     "@ts-safeql/eslint-plugin": "^3.6.8",
@@ -55,9 +56,12 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "esbuild-register": "3.6.0",
     "eslint": "^9.22.0",
     "eslint-config-upleveled": "^9.2.3",
     "globals": "16.0.0",
+    "jest": "30.0.0-alpha.7",
+    "jest-environment-jsdom": "30.0.0-alpha.7",
     "libpg-query": "^16.3.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",

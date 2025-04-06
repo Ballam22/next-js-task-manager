@@ -1,49 +1,44 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  /* shadowDatabaseUrl = env("SHADOW_DATABASE_URL") */
+}
+
 model User {
-  id              String   @id @default(uuid())
-  username        String   @unique
-  hashedPassword  String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  sessions    Session[]
-  tasks      Task[]
+  id             String    @id @default(uuid())
+  username       String    @unique
+  hashedPassword String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessions       Session[]
+  tasks          Task[]
 }
 
 model Session {
-  id               String   @id @default(uuid())
-  token            String   @unique
-  expiryTimestamp  DateTime  @default(dbgenerated("now() + interval '48 hours'"))
-  userId           String
-  user             User     @relation(fields: [userId], references: [id])
+  id              String   @id @default(uuid())
+  token           String   @unique
+  expiryTimestamp DateTime @default(dbgenerated("(now() + '48:00:00'::interval)"))
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 model Task {
-  id              String   @id @default(uuid())
-  date            DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  title           String
-  status          Status @default(upcoming)
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  status    Status   @default(upcoming)
+  userId    String
+  date      DateTime
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 enum Status {
   upcoming
   ongoing
   completed
-}
-
-datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
 }
