@@ -11,9 +11,9 @@ generator client {
 model User {
   id              String   @id @default(uuid())
   username        String   @unique
-  hashedPassword String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  hashedPassword  String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   sessions    Session[]
   tasks      Task[]
 }
@@ -21,20 +21,20 @@ model User {
 model Session {
   id               String   @id @default(uuid())
   token            String   @unique
-  expiryTimestamp   DateTime  @default(dbgenerated("now() + interval '48 hours'"))
+  expiryTimestamp  DateTime  @default(dbgenerated("now() + interval '48 hours'"))
   userId           String
   user             User     @relation(fields: [userId], references: [id])
 }
 
 model Task {
-  id               String   @id @default(uuid())
+  id              String   @id @default(uuid())
   date            DateTime
-  createdAt        DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-    title          String
-    status          Status @default(upcoming)
-  userId           String
-  user             User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  title           String
+  status          Status @default(upcoming)
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 enum Status {
