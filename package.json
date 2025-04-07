@@ -9,7 +9,7 @@
     "lint": "next lint",
     "migrate": "prisma migrate deploy",
     "start": "next start",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && prisma migrate deploy",
     "test:e2e": "playwright test"
   },
   "dependencies": {
