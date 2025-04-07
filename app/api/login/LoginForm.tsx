@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import type { LoginResponseBody } from '../../(auth)/api/login/route';
 import styles from '../../auth.module.css';
-import type { LoginResponseBody } from '../api/login/route';
 
 export function LoginForm() {
   const [username, setUsername] = useState('');
@@ -13,8 +13,13 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('/api/login', {
+
+    const response = await fetch(`${window.location.origin}/api/login`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // <== THIS IS KEY
       body: JSON.stringify({
         username,
         password,
@@ -29,7 +34,6 @@ export function LoginForm() {
     }
 
     router.push('/dashboard');
-
     router.refresh();
   };
 

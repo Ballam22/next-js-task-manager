@@ -7,7 +7,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "migrate": "ley --require tsx/cjs",
+    "migrate": "prisma migrate deploy",
     "start": "next start",
     "postinstall": "prisma generate",
     "test:e2e": "playwright test"

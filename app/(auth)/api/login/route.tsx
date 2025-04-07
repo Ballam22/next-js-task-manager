@@ -67,16 +67,17 @@ export async function POST(
       userId: userWithPasswordHash.id,
     });
 
-    const cookieStore = await cookies();
-    cookieStore.set({
+    const response = NextResponse.json({
+      user: { username: userWithPasswordHash.username },
+    });
+
+    response.cookies.set({
       name: 'sessionToken',
       value: session.token,
       ...secureCookieOptions,
     });
 
-    return NextResponse.json({
-      user: { username: userWithPasswordHash.username },
-    });
+    return response;
   } catch (error) {
     console.error('Login error:', error);
 
