@@ -1,4 +1,5 @@
 'use client';
+import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -70,9 +71,7 @@ export default function RegisterSchema() {
       </form>
       <div className={styles.authSwitch}>
         Already have an account?{' '}
-        <Link href="/login" className={styles.authLink}>
-          Login here
-        </Link>
+        <Link href={'/login' as Route}>Login here</Link>
       </div>
     </div>
   );

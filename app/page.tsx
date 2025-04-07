@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 
 export default function Homepage() {
@@ -18,7 +19,6 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Hero section */}
       <main className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-12 flex-1">
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">
           Where your tasks stay on track
@@ -29,7 +29,7 @@ export default function Homepage() {
         </p>
         <div className="flex gap-4">
           <Link
-            href="/login"
+            href={'/login' as Route}
             className="px-6 py-3 rounded-md bg-white text-blue-600 hover:bg-gray-100 transition font-medium"
           >
             Get Started

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { LoginResponseBody } from '../../(auth)/api/login/route';
+import type { LoginResponseBody } from '../../(auth)/api/auth-login/route';
 import styles from '../../auth.module.css';
 
 export function LoginForm() {
