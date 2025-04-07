@@ -12,7 +12,8 @@ jobs:
       PGDATABASE: next_js_task_manager
       PGUSERNAME: next_js_task_manager
       PGPASSWORD: next_js_task_manager
-      DATABASE_URL: ="postgresql://next_js_task_manager:next_js_task_manager@localhost:5432/next_js_task_manager?schema=next_js_task_manager"
+      DATABASE_URL: 'postgresql://next_js_task_manager:next_js_task_manager@localhost:5432/next_js_task_manager?schema=next_js_task_manager'
+      SHADOW_DATABASE_URL: 'postgresql://next_js_task_manager:next_js_task_manager@localhost:5432/shadow_db'
 
     steps:
       - name: Start preinstalled PostgreSQL on Ubuntu
@@ -76,12 +77,3 @@ jobs:
         with:
           name: playwright-screenshots-videos
           path: playwright/test-results/
-
-  cd:
-    name: Deploy to Fly.io
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: ci
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
