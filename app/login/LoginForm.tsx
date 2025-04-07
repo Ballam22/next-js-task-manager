@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { LoginResponseBody } from '../../(auth)/api/auth-login/route';
-import styles from '../../auth.module.css';
+import type { LoginResponseBody } from '../(auth)/api/login/route';
+import styles from '../auth.module.css';
 
 export function LoginForm() {
   const [username, setUsername] = useState('');
@@ -19,7 +19,7 @@ export function LoginForm() {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include', // <== THIS IS KEY
+      credentials: 'include',
       body: JSON.stringify({
         username,
         password,

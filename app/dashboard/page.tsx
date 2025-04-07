@@ -27,12 +27,10 @@ export default async function DashboardPage() {
 
   const allTasks = await getTasks(sessionTokenCookie.value);
 
-  // Status-based counts
   const upcomingTasks = allTasks.filter((task) => task.status === 'upcoming');
   const ongoingTasks = allTasks.filter((task) => task.status === 'ongoing');
   const completedTasks = allTasks.filter((task) => task.status === 'completed');
 
-  // Date-based counts
   const todayTasks = allTasks.filter((task) => isToday(new Date(task.date)));
   const tomorrowTasks = allTasks.filter((task) =>
     isTomorrow(new Date(task.date)),
@@ -48,7 +46,6 @@ export default async function DashboardPage() {
           Welcome back, <span className="text-blue-600">{user.username}</span>
         </h1>
 
-        {/* Status Overview */}
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-xl text-blue-600">
@@ -68,7 +65,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Date-based Summary */}
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-xl text-blue-600">
@@ -88,7 +84,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Today's Tasks List */}
         {todayTasks.length > 0 && (
           <Card className="shadow-sm">
             <CardHeader>
@@ -114,7 +109,6 @@ export default async function DashboardPage() {
           </Card>
         )}
 
-        {/* View all button */}
         <div className="flex justify-center">
           <Link href="/tasks">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white">

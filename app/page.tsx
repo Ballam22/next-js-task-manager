@@ -1,11 +1,10 @@
-import type { Route } from 'next';
 import Link from 'next/link';
 
 export default function Homepage() {
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
       <div
-        className="absolute inset-0 z-0 animate-gradientShift bg-[length:200%_200%] bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500"
+        className="absolute inset-0 z-0 animate-gradientShift bg-[length:200%_200%] bg-gradient-to-r from-blue-400-600 via-pink-500 to-blue-500"
         style={{
           backgroundSize: '400% 400%',
           animation: 'gradientShift 12s ease infinite',
@@ -29,7 +28,7 @@ export default function Homepage() {
         </p>
         <div className="flex gap-4">
           <Link
-            href={'/login' as Route}
+            href={{ pathname: '/login' }}
             className="px-6 py-3 rounded-md bg-white text-blue-600 hover:bg-gray-100 transition font-medium"
           >
             Get Started

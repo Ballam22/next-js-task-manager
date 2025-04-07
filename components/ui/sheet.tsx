@@ -71,7 +71,6 @@ function SheetContent({
         )}
         {...props}
       >
-        {/* Accessibility-compliant hidden title */}
         <SheetHeader>
           <VisuallyHidden>
             <SheetTitle>Navigation</SheetTitle>

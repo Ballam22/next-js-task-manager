@@ -38,7 +38,6 @@ export default function SidebarLayout({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Don't show sidebar on public pages
   const isPublicPage = ['/login', '/register'].includes(pathname);
 
   return (
