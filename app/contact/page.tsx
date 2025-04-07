@@ -21,7 +21,7 @@ export default function ContactPage() {
             href="mailto:your.email@example.com"
             className="text-blue-600 hover:underline"
           >
-            ballam@gmail.com
+            ballam93@gmail.com
           </a>
         </li>
         <li>
