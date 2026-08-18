@@ -44,6 +44,7 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- must be PascalCase: used as a JSX tag, and lowercase would render a literal DOM element instead of the dynamic component
   const Comp = asChild ? Slot : 'button';
 
   return (

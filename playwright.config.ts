@@ -2,6 +2,7 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   testMatch: '**/playwright/**',
+  globalSetup: './playwright/global-setup.ts',
   forbidOnly: !!process.env.CI,
   fullyParallel: true,
   workers: process.env.CI ? 1 : undefined,
@@ -14,6 +15,12 @@ const config: PlaywrightTestConfig = {
     testIdAttribute: 'data-test-id',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+  },
+  webServer: {
+    command: 'pnpm start',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
   },
 };
 

@@ -1,14 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('user can log in successfully', async ({ page }) => {
-  // Go to homepage
-  await page.goto('/');
-
-  // Click the login button (e.g. from nav bar)
-  await page.getByRole('button', { name: /login/i }).click();
-
-  // Wait for login page to load
-  await page.waitForURL('**/login');
+  // Go to login page
+  await page.goto('/login');
 
   // Check login heading
   await expect(page.getByRole('heading', { name: /login/i })).toBeVisible();

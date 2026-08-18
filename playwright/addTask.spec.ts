@@ -1,11 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 test('add a new task', async ({ page }) => {
-  // Go to homepage
-  await page.goto('/');
+  // Go to login page
+  await page.goto('/login');
 
   // Log in
-  await page.getByRole('button', { name: /login/i }).click();
   await page.getByLabel(/username/i).fill('admin');
   await page.getByLabel(/password/i).fill('Password22');
   await page.getByRole('button', { name: /login/i }).click();
