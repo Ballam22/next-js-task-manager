@@ -62,7 +62,7 @@ export default function RegisterSchema() {
         <div className="font-bold text-red-500">
           {errors?.map((error) => {
             return (
-              <div key={`error-${error.message}-${Math.random()}`}>
+              <div key={`error-${error.message}`}>
                 <div>{error.message}</div>
               </div>
             );
