@@ -1,6 +1,6 @@
 'use client';
 
-import { Github, Linkedin } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/ui/brand-icons';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -17,7 +17,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="hover:text-primary transition-colors"
         >
-          <Github size={20} />
+          <GithubIcon size={20} />
         </Link>
         <Link
           href="https://www.linkedin.com/feed/?trk=onboarding-landing"
@@ -25,7 +25,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="hover:text-primary transition-colors"
         >
-          <Linkedin size={20} />
+          <LinkedinIcon size={20} />
         </Link>
       </div>
     </footer>
