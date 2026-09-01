@@ -41,7 +41,7 @@ export function proxy(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set(
     'Strict-Transport-Security',
-    'max-age=63072000; includeSubDomains; preload',
+    'max-age=63072000; includeSubDomains',
   );
 
   return response;
