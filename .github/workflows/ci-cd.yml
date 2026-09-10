@@ -65,7 +65,7 @@ jobs:
         id: get_playwright_version
         run: echo "::set-output name=playwright_version::$(yq eval '.version' --output-format=yaml ./node_modules/@playwright/test/package.json)"
       - name: Cache Playwright browser binaries
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: playwright-browser-cache
         with:
           path: |
